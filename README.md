@@ -1,26 +1,27 @@
-# Barista em Casa — V8
+# barista em casa — V10
 
-Site estático de receitas de café com 41 receitas em 12 métodos.
+Versão reorganizada do site para GitHub Pages.
 
 ## Estrutura
+- `index.html`
+- `css/style.css`
+- `js/app.js`
+- `manifest.json`
+- `assets/icons/`
+- `assets/images/`
+- `README.md`
 
-- `index.html` — site completo, sem dependências externas.
-- `receitas.json` — base das receitas extraídas.
-- `receitas.csv` — mesma base em CSV.
+## O que mudou no V10
+- A receita agora fica **imediatamente visível** no painel principal.
+- Removida a antiga área grande de parâmetros duplicados.
+- Mantidos apenas os dados da receita em uma linha compacta: dose, água, ratio, temperatura e moagem.
+- Adicionada orientação visível no topo do mobile com setas para indicar a navegação.
+- Vocabulário aproximado ao usado por criadores brasileiros de café: dose, moagem, ratio, pré-infusão, despejo, leito, extração, tempo total, corpo, doçura, acidez, clareza e adstringência.
+- Etapas mantêm termos comuns do preparo (`Blooming`, `First Pour`, `Final Pour`, `Drawdown`, `Steep`, `Press`) e o texto explica o procedimento em português.
+- Timer funcional.
+- Calculadora de ratio.
 
-## Como abrir
+## Publicação
+Publique a pasta raiz no GitHub Pages. O domínio pretendido é `baristaemcasa.com.br`.
 
-Abra `index.html` no navegador.
-
-## Recursos da V8
-
-- Navegação vertical por método.
-- Variações do método em uma segunda coluna vertical.
-- Busca por método, receita e tags.
-- Calculadora dinâmica de café, água e proporção.
-- Temperatura e moagem exibidas por receita.
-- Copiar parâmetros.
-- Link para a fonte original da receita.
-- Layout responsivo para desktop e celular.
-
-Observação: os passos completos de preparo do catálogo original são carregados dinamicamente no site de origem e não foram inventados nesta versão.
+A calculadora usa uma estimativa de aproximadamente 2 g de água retida por 1 g de café para converter volume pronto em dose de café. É uma aproximação.

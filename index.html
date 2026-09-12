@@ -2,723 +2,106 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#17130f">
-<meta name="description" content="Coffee Brew Lab — catálogo e calculadora dinâmica de receitas de café.">
-<title>Coffee Brew Lab — 41 receitas</title>
-
-<style>
-:root{
-  --bg:#f3efe8;--paper:#fffdf9;--paper2:#f8f4ed;--ink:#211b16;--muted:#7b7167;
-  --line:#e5ddd2;--dark:#17130f;--accent:#a76135;--accent2:#d08a58;
-  --shadow:0 14px 38px rgba(44,31,19,.08);--radius:20px
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input{font:inherit}button{cursor:pointer}
-.app{min-height:100vh}
-
-.topbar{
-  height:68px;display:flex;align-items:center;gap:14px;padding:0 18px;
-  border-bottom:1px solid var(--line);background:rgba(255,253,249,.94);
-  backdrop-filter:blur(16px);position:sticky;top:0;z-index:50
-}
-.brand{display:flex;align-items:center;gap:10px;min-width:220px}
-.logo{width:38px;height:38px;border-radius:12px;background:var(--dark);color:#fff8ed;display:grid;place-items:center}
-.brand strong{font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:1px}
-.search{flex:1;max-width:600px;position:relative}
-.search input{width:100%;height:42px;border:1px solid var(--line);background:#fff;border-radius:13px;padding:0 38px;outline:0}
-.search input:focus{border-color:#c8a78f;box-shadow:0 0 0 4px rgba(167,97,53,.08)}
-.search .icon{position:absolute;left:14px;top:10px;color:var(--muted)}
-.search .kbd{position:absolute;right:10px;top:9px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;color:#a0978d;font-size:9px}
-.top-actions{margin-left:auto;display:flex;gap:7px}.pill{border:1px solid var(--line);background:#fff;border-radius:11px;padding:8px 10px;color:#655c53;font-size:10px}
-
-.layout{display:grid;grid-template-columns:220px 280px minmax(0,1fr);min-height:calc(100vh - 68px)}
-.rail{background:rgba(255,253,249,.72);overflow:auto}
-.methods-rail{border-right:1px solid var(--line);padding:16px 11px}
-.recipe-rail{border-right:1px solid var(--line);background:#faf7f2;padding:0 12px}
-.rail-title{display:flex;justify-content:space-between;padding:0 8px 10px}
-.rail-title span{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:900}
-.count{font-size:9px;background:#eee8df;border-radius:99px;padding:4px 7px}
-.method-btn,.recipe-btn{
-  width:100%;display:flex;align-items:center;text-align:left;border:0;background:transparent;
-  border-radius:13px;padding:9px 9px;margin:2px 0;color:#665d55;transition:.16s
-}
-.method-btn:hover,.recipe-btn:hover{background:#eee8df;color:var(--ink)}
-.method-btn.active,.recipe-btn.active{background:var(--dark);color:#fff8ef;box-shadow:0 7px 16px rgba(23,19,15,.13)}
-.method-icon{width:29px;height:29px;border-radius:9px;background:#eee8df;display:grid;place-items:center;margin-right:9px;flex:none;font-size:13px}
-.method-btn.active .method-icon{background:rgba(255,255,255,.12)}
-.method-text{min-width:0;flex:1}.method-text strong{display:block;font-size:11px}.method-text small{display:block;font-size:9px;opacity:.7;margin-top:2px}
-.method-count{font-size:9px;opacity:.6}
-.recipe-head{padding:17px 4px 11px;position:sticky;top:0;background:#faf7f2;z-index:3}
-.recipe-head .eyebrow,.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:900}
-.recipe-head h2{font-size:18px;margin:4px 0 2px}.recipe-head p{font-size:10px;color:var(--muted);margin:0;line-height:1.35}
-.recipe-btn{padding:10px 8px;gap:9px}.recipe-btn .dot{width:6px;height:6px;border-radius:50%;background:#c9beb2;flex:none}
-.recipe-btn.active .dot{background:var(--accent2)}
-.recipe-name{font-size:10px;font-weight:800;line-height:1.3;display:block}.recipe-tag{font-size:8px;color:#9a9087;margin-top:3px;display:block}.recipe-btn.active .recipe-tag{color:#c8bbb0}
-
-.main{padding:30px clamp(18px,4vw,48px) 50px;min-width:0}
-.hero{max-width:1050px;margin:0 auto 18px;display:flex;justify-content:space-between;gap:20px;align-items:end}
-.hero h1{font-size:clamp(28px,4vw,45px);line-height:1.02;letter-spacing:-.045em;margin:7px 0 8px}
-.hero p{margin:0;color:var(--muted);font-size:12px;line-height:1.5;max-width:700px}
-.hero-side{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.tag{font-size:9px;font-weight:800;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 8px;color:#6e655d}
-
-.recipe-card{max-width:1050px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
-.card-top{padding:22px 24px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:18px}
-.card-top h2{margin:4px 0 5px;font-size:23px;letter-spacing:-.03em}.card-top p{margin:0;color:var(--muted);font-size:10px}
-.card-actions{display:flex;gap:7px;align-items:flex-start}.action{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:9px;color:#5f574f;text-decoration:none;white-space:nowrap}.action.primary{background:var(--dark);border-color:var(--dark);color:#fff8ef}
-
-.stats{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}
-.stat{padding:14px 16px;border-right:1px solid var(--line)}.stat:last-child{border:0}
-.stat span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:900;margin-bottom:6px}
-.stat strong{font-size:17px;letter-spacing:-.03em}.stat em{font-style:normal;color:var(--muted);font-size:9px;margin-left:3px}
-
-.body{padding:20px 24px 24px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.95fr);gap:14px}
-.section{border:1px solid var(--line);background:var(--paper2);border-radius:16px;padding:15px}
-.section h3{font-size:9px;text-transform:uppercase;letter-spacing:.11em;margin:0 0 11px}
-.param-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.field{background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 10px}.field label{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:5px}
-.field .inputrow{display:flex;align-items:center;gap:5px}.field input{width:100%;border:0;outline:0;background:transparent;font-size:16px;font-weight:850;color:var(--ink);min-width:0}.unit{font-size:8px;color:var(--muted);white-space:nowrap}
-.calc-note{margin-top:8px;font-size:8px;line-height:1.45;color:var(--muted)}
-.notes{display:grid;gap:7px}.note{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 11px;font-size:9px;line-height:1.45;color:#625a52}.note strong{display:block;color:var(--ink);font-size:8px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
-.guide{margin-top:0}.guide-box{display:flex;gap:10px;align-items:flex-start;padding:11px;border-radius:11px;background:#f1eade}.guide-number{width:25px;height:25px;border-radius:7px;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:900;font-size:9px;flex:none}.guide-box h4{margin:0 0 3px;font-size:9px}.guide-box p{margin:0;font-size:8px;line-height:1.4;color:var(--muted)}
-.footer{max-width:1050px;margin:12px auto 0;color:#948a80;font-size:8px;line-height:1.45}
-
-.mobile-methods,.mobile-recipes{display:none}.mobile-nav-wrap{position:relative}.mobile-nav-wrap .mobile-methods,.mobile-nav-wrap .mobile-recipes{scrollbar-width:none}.mobile-nav-wrap .mobile-methods::-webkit-scrollbar,.mobile-nav-wrap .mobile-recipes::-webkit-scrollbar{display:none}
-.empty{padding:22px 10px;text-align:center;color:var(--muted);font-size:10px}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:9px 12px;border-radius:10px;font-size:9px;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(max-width:900px){
-  .topbar{height:62px;padding:9px 12px;gap:9px}.brand{min-width:auto}.brand small,.top-actions{display:none}.brand strong{font-size:12px}.logo{width:34px;height:34px;border-radius:10px}
-  .search{max-width:none}.search input{height:38px;font-size:11px;padding-left:36px}
-  .layout{display:block;min-height:0}
-  .methods-rail{display:none}.recipe-rail{display:none}
-  .mobile-methods{display:block;position:sticky;top:62px;z-index:40;background:rgba(250,247,242,.96);border-bottom:1px solid var(--line);padding:8px 10px;overflow-x:auto;white-space:nowrap}
-  .mobile-methods .method-btn{display:inline-flex;width:auto;margin:0 3px 0 0;padding:7px 9px;border:1px solid var(--line);vertical-align:middle}
-  .mobile-methods .method-icon{width:24px;height:24px;margin-right:6px;font-size:11px}.mobile-methods .method-text small,.mobile-methods .method-count{display:none}.mobile-methods .method-text strong{font-size:9px}
-  .mobile-recipes{display:block;background:var(--paper);border-bottom:1px solid var(--line);padding:9px 10px;overflow-x:auto}
-  .mobile-recipes .recipe-list{display:flex;gap:7px;width:max-content}.mobile-recipes .recipe-btn{width:210px;min-height:49px;margin:0;background:#f3eee7;border:1px solid var(--line)}.mobile-recipes .recipe-btn.active{background:var(--dark)}
-  .main{padding:20px 12px 35px}.hero{display:block;margin-bottom:14px}.hero h1{font-size:30px}.hero p{font-size:10px}.hero-side{justify-content:flex-start;margin-top:10px}
-  .recipe-card{border-radius:18px}.card-top{padding:17px 15px 14px;display:block}.card-top h2{font-size:19px}.card-actions{margin-top:11px}.action{font-size:8px}
-  .stats{grid-template-columns:repeat(3,1fr)}.stat{padding:11px 10px}.stat:nth-child(3){border-right:0}.stat:nth-child(n+4){border-top:1px solid var(--line)}.stat strong{font-size:15px}
-  .body{padding:14px;grid-template-columns:1fr}.section{padding:13px}
-  .footer{font-size:7px}
-}
-@media(max-width:520px){
-  .stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2),.stat:nth-child(4){border-right:0}.stat:nth-child(3),.stat:nth-child(4),.stat:nth-child(5){border-top:1px solid var(--line)}
-  .param-grid{grid-template-columns:repeat(2,1fr)}
-  .field input{font-size:15px}
-}
-@media(max-width:370px){
-  .param-grid{grid-template-columns:1fr}.hero h1{font-size:27px}.mobile-recipes .recipe-btn{width:190px}
-}
-
-/* V8 — leitura mobile e navegação horizontal */
-.section-title-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}
-.section-title-row h3{margin:0}
-.section-subtitle{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.4}
-.live-badge,.recipe-status{font-size:7px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;border:1px solid var(--line);border-radius:99px;padding:5px 7px;white-space:nowrap;background:#fff;color:var(--good)}
-.recipe-status{color:var(--accent)}
-.recipe-section{background:#fffaf3}
-.recipe-highlight{display:flex;align-items:center;gap:10px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
-.recipe-highlight-icon{width:30px;height:30px;border-radius:9px;background:var(--dark);color:#fff;display:grid;place-items:center;flex:none}
-.recipe-highlight strong{display:block;font-size:11px;line-height:1.3}
-.recipe-highlight span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
-.recipe-details{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.detail-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px}
-.detail-card span{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:5px}
-.detail-card strong{display:block;font-size:13px}
-.detail-card small{display:block;color:var(--muted);font-size:8px;margin-top:3px}
-.recipe-note{margin-top:8px;padding:10px 11px;border:1px solid var(--line);background:#fff;border-radius:11px}
-.recipe-note strong{font-size:8px;text-transform:uppercase;letter-spacing:.08em}
-.recipe-note p{font-size:9px;line-height:1.45;color:#625a52;margin:4px 0 0}
-.recipe-steps{display:grid;gap:6px;margin-top:8px}
-.mini-step{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:10px;background:#f1eade;font-size:8px;line-height:1.4;color:#665d55}
-.mini-step b{width:22px;height:22px;border-radius:7px;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:8px;flex:none}
-
-/* Setas discretas sobre as faixas horizontais no celular */
-.scroll-wrap{position:relative}
-.scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:8;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:rgba(255,253,249,.95);box-shadow:0 5px 14px rgba(35,25,17,.12);display:grid;place-items:center;color:var(--ink);font-size:17px;line-height:1}
-.scroll-arrow.left{left:5px}.scroll-arrow.right{right:5px}
-.scroll-arrow[disabled]{opacity:.28;pointer-events:none}
-@media(min-width:901px){.scroll-arrow{display:none}}
-@media(max-width:520px){
-  .section-title-row{align-items:center}
-  .section-subtitle{font-size:8px}
-  .recipe-details{grid-template-columns:1fr 1fr}
-}
-
-/* BARISTA EM CASA — identidade visual colorida V8 */
-:root{
-  --bg:#fff7ec;
-  --paper:#fffdf8;
-  --paper2:#fff3df;
-  --ink:#241813;
-  --muted:#806d60;
-  --line:#ead9c8;
-  --dark:#24150f;
-  --accent:#d65a2a;
-  --accent2:#f2a33a;
-  --coffee:#7a3f22;
-  --cream:#fff0c9;
-  --mint:#cdebdc;
-  --sky:#d8e9f6;
-  --pink:#f5d3cf;
-  --yellow:#ffe39a;
-  --shadow:0 16px 45px rgba(105,61,27,.11);
-  --radius:20px
-}
-body{
-  background:
-    radial-gradient(circle at 8% 5%,rgba(242,163,58,.20),transparent 23%),
-    radial-gradient(circle at 94% 18%,rgba(214,90,42,.14),transparent 25%),
-    linear-gradient(145deg,#fffaf2 0%,#fff4e4 48%,#f9eee2 100%);
-}
-.topbar{
-  background:rgba(255,253,248,.94);
-  border-bottom:1px solid #ead9c8;
-}
-.logo{
-  background:linear-gradient(145deg,#2b1710,#713b21);
-  box-shadow:0 7px 18px rgba(110,56,28,.22);
-}
-.search input{
-  background:#fffdf9;
-  border-color:#e5d4c2;
-}
-.search input:focus{
-  border-color:#e28a55;
-  box-shadow:0 0 0 4px rgba(214,90,42,.10)
-}
-.pill{
-  background:#fff9f0;border-color:#ead9c8
-}
-.methods-rail{background:rgba(255,250,243,.78);border-color:#ead9c8}
-.recipe-rail{background:rgba(255,247,237,.84);border-color:#ead9c8}
-.recipe-head{background:rgba(255,247,237,.95)}
-.method-btn:hover,.recipe-btn:hover{background:#ffead3}
-.method-btn.active,.recipe-btn.active{
-  background:linear-gradient(135deg,#2a1811,#5a2d1b);
-  box-shadow:0 8px 20px rgba(89,43,25,.18)
-}
-.method-icon{
-  background:#ffe9cf;
-  color:#7a3f22
-}
-.method-btn.active .method-icon{background:rgba(255,211,151,.18);color:#ffd29c}
-.count{background:#ffe9d3;color:#8b5637}
-.recipe-btn{background:transparent}
-.recipe-btn .dot{background:#e1c5af}
-.recipe-btn.active .dot{background:#ffb34d}
-.eyebrow{color:#c84d23}
-.tag{
-  background:#fffaf1;
-  border-color:#ead5c0;
-}
-.hero h1{
-  color:#2a1812;
-}
-.hero h1::after{
-  content:"";
-  display:block;
-  width:70px;height:6px;margin-top:13px;border-radius:99px;
-  background:linear-gradient(90deg,#d65a2a,#f2a33a,#f7d36a);
-}
-.recipe-card{
-  background:rgba(255,253,248,.96);
-  border-color:#ead9c8;
-  box-shadow:0 20px 55px rgba(105,61,27,.12);
-}
-.card-top{
-  background:linear-gradient(120deg,#fffdf8 0%,#fff6e8 100%);
-  border-color:#ead9c8;
-}
-.action{
-  background:#fffaf3;border-color:#e5d4c2
-}
-.action.primary{
-  background:linear-gradient(135deg,#d65a2a,#9e3d1f);
-  border-color:#9e3d1f
-}
-.stats{
-  background:#fffaf3;
-  border-color:#ead9c8
-}
-.stat{border-color:#ead9c8}
-.stat:nth-child(1) strong{color:#b94d27}
-.stat:nth-child(2) strong{color:#2f765b}
-.stat:nth-child(3) strong{color:#7651a6}
-.stat:nth-child(4) strong{color:#2f6c9d}
-.stat:nth-child(5) strong{color:#7a3f22}
-.body{background:transparent}
-.section{
-  background:linear-gradient(145deg,#fff8ec,#fff2df);
-  border-color:#ead9c8
-}
-.parameter-section{
-  background:linear-gradient(145deg,#fff7e8,#fff0d3);
-  border-color:#efc98e;
-  box-shadow:inset 0 3px 0 rgba(242,163,58,.32)
-}
-.recipe-section{
-  background:linear-gradient(145deg,#fff9f0,#fff0e7);
-  border-color:#ecc9b8
-}
-.live-badge{
-  background:#e5f5eb;border-color:#c2e4cf;color:#3e7658
-}
-.recipe-status{
-  background:#fff0dd;border-color:#f0c99f;color:#b84d25
-}
-.field{
-  background:#fffdf9;
-  border-color:#ead9c8;
-  box-shadow:0 4px 12px rgba(110,64,30,.035)
-}
-.field:focus-within{
-  border-color:#df8b55;
-  box-shadow:0 0 0 3px rgba(214,90,42,.08)
-}
-.field input{color:#2c1911}
-.recipe-highlight{
-  background:linear-gradient(110deg,#fffdf9,#fff0d6);
-  border-color:#ecd4bd
-}
-.recipe-highlight-icon{
-  background:linear-gradient(145deg,#d65a2a,#8d351d)
-}
-.detail-card:nth-child(1){
-  background:#fff5dc;border-color:#efd49d
-}
-.detail-card:nth-child(2){
-  background:#eaf5ee;border-color:#c8e3d1
-}
-.recipe-note{
-  background:#fffdf8;border-color:#ead9c8
-}
-.recipe-steps .mini-step:nth-child(1){background:#fff0cf}
-.recipe-steps .mini-step:nth-child(2){background:#e7f3ec}
-.recipe-steps .mini-step:nth-child(3){background:#f2e8f8}
-.mini-step b{background:#2b1911}
-.footer{color:#927d6d}
-.mobile-methods,.mobile-recipes{
-  background:rgba(255,248,239,.97);
-  border-color:#ead9c8
-}
-.mobile-methods .method-btn{
-  background:#fffaf3;border-color:#ead9c8
-}
-.mobile-methods .method-btn.active{
-  background:linear-gradient(135deg,#2a1811,#5a2d1b);
-  border-color:#2a1811
-}
-.mobile-recipes .recipe-btn{
-  background:#fff9f0;border-color:#ead9c8
-}
-.mobile-recipes .recipe-btn.active{background:linear-gradient(135deg,#2a1811,#5a2d1b)}
-.scroll-arrow{
-  background:rgba(255,253,248,.98);
-  border-color:#e2c9b1;
-  color:#8d4324;
-  box-shadow:0 6px 18px rgba(96,53,28,.14)
-}
-.toast{background:linear-gradient(135deg,#2a1811,#67351f)}
-
-</style>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7efe5">
+<meta name="description" content="barista em casa — receitas de café e calculadora de proporção.">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+<title>barista em casa</title>
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">☕</div>
-      <div><strong>Coffee Brew Lab</strong><small>41 receitas · 12 métodos</small></div>
-    </div>
-    <div class="search">
-      <span class="icon">⌕</span>
-      <input id="search" type="search" placeholder="Buscar método, receita ou tag…" autocomplete="off">
-      <span class="kbd">/</span>
-    </div>
-    <div class="top-actions">
-      <div class="pill"><b id="visibleCount">41</b> receitas</div>
-      <div class="pill">Calculadora dinâmica</div>
-    </div>
-  </header>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">☕</span><span>barista <b>em casa</b></span></a>
+  <button class="calc-btn" id="openCalc">Calculadora</button>
+</header>
 
-  <div class="mobile-nav-wrap methods-scroll-wrap">
-    <button class="scroll-arrow left" id="methodsLeft" aria-label="Rolar métodos para a esquerda">‹</button>
-    <div class="mobile-methods" id="mobileMethods"></div>
-    <button class="scroll-arrow right" id="methodsRight" aria-label="Rolar métodos para a direita">›</button>
+<main>
+<section class="hero">
+  <div>
+    <span class="eyebrow">baristaemcasa.com.br</span>
+    <h1>Faça um café<br><em>bem feito.</em></h1>
+    <p>Receitas práticas, linguagem de café e parâmetros para você repetir o preparo — e ajustar pelo sabor.</p>
   </div>
-  <div class="mobile-nav-wrap recipes-scroll-wrap">
-    <button class="scroll-arrow left" id="recipesLeft" aria-label="Rolar receitas para a esquerda">‹</button>
-    <div class="mobile-recipes" id="mobileRecipes"></div>
-    <button class="scroll-arrow right" id="recipesRight" aria-label="Rolar receitas para a direita">›</button>
-  </div>
+  <div class="hero-cup" aria-hidden="true">☕</div>
+</section>
 
-  <div class="layout">
-    <aside class="rail methods-rail">
-      <div class="rail-title"><span>Métodos</span><span class="count">12</span></div>
-      <div id="methods"></div>
-    </aside>
+<section class="mobile-guide" aria-label="Navegação">
+  <span>←</span> escolha o método <span>↓</span> abra a receita <span>→</span>
+</section>
 
-    <aside class="rail recipe-rail">
-      <div class="recipe-head">
-        <div class="eyebrow">Variações</div>
-        <h2 id="methodTitle">V60</h2>
-        <p id="methodSubtitle">Escolha uma receita para abrir os detalhes.</p>
-      </div>
-      <div id="recipesList"></div>
-    </aside>
+<section class="brew-layout">
+  <aside class="method-rail" aria-label="Métodos">
+    <div class="rail-title">Métodos</div>
+    <button class="method active" data-method="v60"><span class="method-icon">◒</span><span>V60</span></button>
+    <button class="method" data-method="aeropress"><span class="method-icon">◉</span><span>AeroPress</span></button>
+    <button class="method" data-method="chemex"><span class="method-icon">♢</span><span>Chemex</span></button>
+    <button class="method" data-method="french"><span class="method-icon">▥</span><span>Prensa</span></button>
+    <button class="method" data-method="moka"><span class="method-icon">♜</span><span>Moka</span></button>
+  </aside>
 
-    <main class="main">
-      <section class="hero">
-        <div>
-          <div class="eyebrow">Seu bar de receitas</div>
-          <h1>Seu café, do seu jeito. ☕</h1>
-          <p>Escolha o método, ajuste a quantidade e deixe o Barista em Casa organizar as contas. Depois é só seguir a receita e preparar.</p>
-        </div>
-        <div class="hero-side">
-          <span class="tag">41 receitas</span><span class="tag">12 métodos</span><span class="tag">Responsivo</span>
-        </div>
-      </section>
+  <section class="recipe-nav" aria-label="Receitas">
+    <div class="nav-head"><span>Receitas</span><b>→</b></div>
+    <button class="recipe-choice active" data-recipe="v60"><span><b>V60</b><small>Hoffmann</small></span><strong>→</strong></button>
+    <button class="recipe-choice" data-recipe="aeropress"><span><b>AeroPress</b><small>Clássica</small></span><strong>→</strong></button>
+    <button class="recipe-choice" data-recipe="chemex"><span><b>Chemex</b><small>Clareza</small></span><strong>→</strong></button>
+    <button class="recipe-choice" data-recipe="french"><span><b>Prensa Francesa</b><small>Imersão</small></span><strong>→</strong></button>
+    <button class="recipe-choice" data-recipe="moka"><span><b>Moka</b><small>Intensa</small></span><strong>→</strong></button>
+  </section>
 
-      <section class="recipe-card" id="recipeCard"></section>
-      <div class="footer">Parâmetros organizados para uso no Barista em Casa. As informações numéricas são apresentadas como referências de preparo; o passo a passo detalhado desta versão será incorporado à medida que cada técnica for estruturada.</div>
-    </main>
-  </div>
-</div>
-<div id="toast" class="toast"></div>
-
-<script>
-const METHODS = ["V60", "AeroPress", "Orea", "French Press", "Clever", "Hario Switch", "Chemex", "Moka Pot", "Origami", "Siphon", "Cezve", "Cold Brew"];
-const RECIPES = [{"method": "V60", "recipe": "Tetsu Kasuya 4:6 Method", "slug": "tetsu-kasuya", "url": "https://calculate.coffee/v60/tetsu-kasuya", "coffee_g": 20, "ratio": "1:15", "water_ml": 300, "temperature_c": 93, "grind_size": "Medium-coarse", "tags": ["4:6", "Hot"], "notes": "First 40% controls acidity/sweetness; last 60% controls strength."}, {"method": "V60", "recipe": "James Hoffmann Ultimate V60", "slug": "james-hoffmann", "url": "https://calculate.coffee/v60/james-hoffmann", "coffee_g": 15, "ratio": "1:16.66", "water_ml": 250, "temperature_c": 94, "grind_size": "Medium-fine", "tags": ["Hot"], "notes": "Ratio shown as fixed on the site; bloom and two main pours."}, {"method": "V60", "recipe": "Scott Rao Bloom & Main Pour", "slug": "scott-rao", "url": "https://calculate.coffee/v60/scott-rao", "coffee_g": 15, "ratio": "1:16.67", "water_ml": 250, "temperature_c": 93, "grind_size": "Medium", "tags": ["Hot"], "notes": "Large bloom, continuous main pour and Rao Spin."}, {"method": "V60", "recipe": "Classic V60 Three-Pour Method", "slug": "classic", "url": "https://calculate.coffee/v60/classic", "coffee_g": 15, "ratio": "1:15", "water_ml": 225, "temperature_c": 92, "grind_size": "Medium", "tags": ["Hot"], "notes": "Beginner-friendly three-pour profile."}, {"method": "V60", "recipe": "Lance Hedrick Pulse Pour", "slug": "lance-hedrick", "url": "https://calculate.coffee/v60/lance-hedrick", "coffee_g": 15, "ratio": "1:15", "water_ml": 225, "temperature_c": 94, "grind_size": "Medium", "tags": ["Hot"], "notes": "Five even pulse pours after a generous bloom."}, {"method": "V60", "recipe": "Matt Perger Barista Hustle", "slug": "matt-perger", "url": "https://calculate.coffee/v60/matt-perger", "coffee_g": 15, "ratio": "1:16", "water_ml": 240, "temperature_c": 94, "grind_size": "Medium", "tags": ["Hot"], "notes": "Oversized bloom, aggressive pour and quick stir."}, {"method": "V60", "recipe": "Iced V60 Flash Brew", "slug": "iced", "url": "https://calculate.coffee/v60/iced", "coffee_g": 15, "ratio": "1:13", "water_ml": 195, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "40% ice in cup and 60% hot water through dripper."}, {"method": "AeroPress", "recipe": "James Hoffmann The Ultimate Aeropress", "slug": "james-hoffmann", "url": "https://calculate.coffee/aeropress/james-hoffmann", "coffee_g": 11, "ratio": "1:17", "water_ml": 187, "temperature_c": 80, "grind_size": "Medium-fine", "tags": ["Hot", "Inverted"], "notes": "Low temperature, long steep, gentle press."}, {"method": "AeroPress", "recipe": "Classic Method The Original Technique", "slug": "classic", "url": "https://calculate.coffee/aeropress/classic", "coffee_g": 15, "ratio": "1:15", "water_ml": 225, "temperature_c": 85, "grind_size": "Medium", "tags": ["Hot"], "notes": "Simple upright AeroPress method."}, {"method": "AeroPress", "recipe": "WAC Style Championship Technique", "slug": "wac", "url": "https://calculate.coffee/aeropress/wac", "coffee_g": 15, "ratio": "1:13", "water_ml": 195, "temperature_c": 90, "grind_size": "Medium-coarse", "tags": ["Hot", "WAC"], "notes": "Competition-inspired lower-temperature profile."}, {"method": "AeroPress", "recipe": "Inverted Method Full Immersion Variant", "slug": "inverted", "url": "https://calculate.coffee/aeropress/inverted", "coffee_g": 15, "ratio": "1:13", "water_ml": 195, "temperature_c": 85, "grind_size": "Medium", "tags": ["Hot", "Inverted"], "notes": "Full immersion with inverted brewer."}, {"method": "AeroPress", "recipe": "Iced AeroPress Flash Brew", "slug": "iced", "url": "https://calculate.coffee/aeropress/iced", "coffee_g": 15, "ratio": "1:8", "water_ml": 120, "temperature_c": 87, "grind_size": "Medium", "tags": ["Iced"], "notes": "Hot concentrate brewed directly onto ice."}, {"method": "AeroPress", "recipe": "Tim Wendelboe Nordic Light Roast", "slug": "tim-wendelboe", "url": "https://calculate.coffee/aeropress/tim-wendelboe", "coffee_g": 15, "ratio": "1:16", "water_ml": 240, "temperature_c": 92, "grind_size": "Medium", "tags": ["Hot"], "notes": "Clean, minimalist light-roast profile."}, {"method": "AeroPress", "recipe": "Fellow Prismo Pressure Concentrate", "slug": "fellow-prismo", "url": "https://calculate.coffee/aeropress/fellow-prismo", "coffee_g": 18, "ratio": "1:5", "water_ml": 90, "temperature_c": 85, "grind_size": "Medium", "tags": ["Hot", "Prismo"], "notes": "Pressure concentrate requiring the Prismo accessory."}, {"method": "Orea", "recipe": "Lance Hedrick Bloom & Two Pours", "slug": "lance-hedrick", "url": "https://calculate.coffee/orea/lance-hedrick", "coffee_g": 15, "ratio": "1:16", "water_ml": 240, "temperature_c": 94, "grind_size": "Medium", "tags": ["Hot"], "notes": "Bloom at 3× dose followed by two controlled pours."}, {"method": "Orea", "recipe": "Standard Method Four-Pour Percolation", "slug": "standard", "url": "https://calculate.coffee/orea/standard", "coffee_g": 15, "ratio": "1:15", "water_ml": 225, "temperature_c": 93, "grind_size": "Medium", "tags": ["Hot"], "notes": "Even, methodical pours every 30 seconds."}, {"method": "Orea", "recipe": "Iced Orea Pulse Flash Brew", "slug": "iced", "url": "https://calculate.coffee/orea/iced", "coffee_g": 15, "ratio": "1:13", "water_ml": 195, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "Three pulse pours over ice."}, {"method": "French Press", "recipe": "James Hoffmann Ultimate French Press", "slug": "james-hoffmann", "url": "https://calculate.coffee/french-press/james-hoffmann", "coffee_g": 30, "ratio": "1:17", "water_ml": 510, "temperature_c": 94, "grind_size": "Medium", "tags": ["Hot"], "notes": "Break crust, settle grounds and decant without pressing the plunger."}, {"method": "French Press", "recipe": "Classic Method The Traditional Steep", "slug": "classic", "url": "https://calculate.coffee/french-press/classic", "coffee_g": 30, "ratio": "1:15", "water_ml": 450, "temperature_c": 93, "grind_size": "Medium", "tags": ["Hot"], "notes": "Four-minute traditional steep."}, {"method": "French Press", "recipe": "Iced French Press Concentrate & Chill", "slug": "iced", "url": "https://calculate.coffee/french-press/iced", "coffee_g": 30, "ratio": "1:11", "water_ml": 330, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "Stronger steep poured over ice."}, {"method": "Clever", "recipe": "James Hoffmann Steep & Release", "slug": "james-hoffmann", "url": "https://calculate.coffee/clever/james-hoffmann", "coffee_g": 30, "ratio": "1:16.66", "water_ml": 500, "temperature_c": 100, "grind_size": "Medium", "tags": ["Hot"], "notes": "45-second bloom, immersion, then release at 3 minutes."}, {"method": "Clever", "recipe": "Classic Method Set & Forget", "slug": "classic", "url": "https://calculate.coffee/clever/classic", "coffee_g": 20, "ratio": "1:15", "water_ml": 300, "temperature_c": 92, "grind_size": "Medium", "tags": ["Hot"], "notes": "Simple immersion method; site recommends roughly 3–4 minute steep."}, {"method": "Clever", "recipe": "Iced Clever Immersion & Chill", "slug": "iced", "url": "https://calculate.coffee/clever/iced", "coffee_g": 20, "ratio": "1:11", "water_ml": 220, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "Stronger concentrate released directly onto ice."}, {"method": "Hario Switch", "recipe": "Tetsu Kasuya Hybrid Method", "slug": "tetsu-kasuya", "url": "https://calculate.coffee/hario-switch/tetsu-kasuya", "coffee_g": 20, "ratio": "1:15", "water_ml": 300, "temperature_c": 92, "grind_size": "Medium", "tags": ["4:6", "Hot"], "notes": "Valve closed during first 40% phase, then opened for strength phase."}, {"method": "Hario Switch", "recipe": "James Hoffmann Switch Steep", "slug": "james-hoffmann", "url": "https://calculate.coffee/hario-switch/james-hoffmann", "coffee_g": 18, "ratio": "1:16.66", "water_ml": 300, "temperature_c": 95, "grind_size": "Medium", "tags": ["Hot"], "notes": "Closed immersion bloom followed by slow pour-over drain."}, {"method": "Hario Switch", "recipe": "Iced Switch Immersion Flash Brew", "slug": "iced", "url": "https://calculate.coffee/hario-switch/iced", "coffee_g": 18, "ratio": "1:13", "water_ml": 234, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "Steep concentrate with valve closed, then release onto ice."}, {"method": "Chemex", "recipe": "Iced Chemex Large-Batch Flash Brew", "slug": "iced", "url": "https://calculate.coffee/chemex/iced", "coffee_g": 42, "ratio": "1:13", "water_ml": 546, "temperature_c": 96, "grind_size": "Medium", "tags": ["Iced"], "notes": "Brew directly onto ice inside the carafe."}, {"method": "Chemex", "recipe": "Scott Rao The Rao Spin", "slug": "scott-rao", "url": "https://calculate.coffee/chemex/scott-rao", "coffee_g": 42, "ratio": "1:16.66", "water_ml": 700, "temperature_c": 96, "grind_size": "Medium", "tags": ["Hot"], "notes": "Continuous spiral pour with Rao Spin."}, {"method": "Chemex", "recipe": "Chemex Official Pulse-Pour Method", "slug": "classic", "url": "https://calculate.coffee/chemex/classic", "coffee_g": 30, "ratio": "1:15", "water_ml": 450, "temperature_c": 94, "grind_size": "Medium", "tags": ["Hot"], "notes": "Three-pulse pour profile from the site's Chemex official recipe."}, {"method": "Moka Pot", "recipe": "James Hoffmann Pre-boiled + Low Heat", "slug": "james-hoffmann", "url": "https://calculate.coffee/moka-pot/james-hoffmann", "coffee_g": 18, "ratio": "1:15", "water_ml": 270, "temperature_c": 100, "grind_size": "Medium", "tags": ["Hot"], "notes": "Cold-water/low-heat approach described on the site; page displays 100°C target."}, {"method": "Moka Pot", "recipe": "Iced Moka Pot Shakerato Style", "slug": "iced", "url": "https://calculate.coffee/moka-pot/iced", "coffee_g": 18, "ratio": "1:10", "water_ml": 180, "temperature_c": 100, "grind_size": "Medium", "tags": ["Iced"], "notes": "Stovetop concentrate served over ice or shaken."}, {"method": "Moka Pot", "recipe": "Classic Italian Stovetop Tradition", "slug": "classic", "url": "https://calculate.coffee/moka-pot/classic", "coffee_g": 28, "ratio": "1:10", "water_ml": 280, "temperature_c": 20, "grind_size": "Medium", "tags": ["Hot"], "notes": "Traditional Italian profile; page displays 20°C in the temperature field."}, {"method": "Origami", "recipe": "Jia Ning Du 2019 WBrC Champion", "slug": "jia-ning-du", "url": "https://calculate.coffee/origami/jia-ning-du", "coffee_g": 13, "ratio": "1:17", "water_ml": 221, "temperature_c": 86, "grind_size": "Medium", "tags": ["Hot"], "notes": "Low-temperature competition routine with Kalita filter."}, {"method": "Origami", "recipe": "Iced Origami Flash Brew", "slug": "iced", "url": "https://calculate.coffee/origami/iced", "coffee_g": 13, "ratio": "1:13", "water_ml": 169, "temperature_c": 94, "grind_size": "Medium", "tags": ["Iced"], "notes": "Two pours over ice."}, {"method": "Origami", "recipe": "Tetsu Kasuya 4:6 on Origami", "slug": "tetsu-kasuya", "url": "https://calculate.coffee/origami/tetsu-kasuya", "coffee_g": 15, "ratio": "1:15", "water_ml": 225, "temperature_c": 92, "grind_size": "Medium", "tags": ["4:6", "Hot"], "notes": "4:6 adapted to Origami's faster-draining geometry."}, {"method": "Siphon", "recipe": "Hidenori Izaki Folding Stir Method", "slug": "hidenori-izaki", "url": "https://calculate.coffee/siphon/hidenori-izaki", "coffee_g": 30, "ratio": "1:13.33", "water_ml": 400, "temperature_c": 85, "grind_size": "Medium", "tags": ["Hot"], "notes": "World Barista Champion recipe using folding stirs."}, {"method": "Siphon", "recipe": "Classic Hario Technica Vacuum Brewing", "slug": "classic", "url": "https://calculate.coffee/siphon/classic", "coffee_g": 24, "ratio": "1:15", "water_ml": 360, "temperature_c": 85, "grind_size": "Medium", "tags": ["Hot"], "notes": "Traditional Hario siphon profile."}, {"method": "Cezve", "recipe": "Traditional Two-Rise Method", "slug": "traditional", "url": "https://calculate.coffee/cezve/traditional", "coffee_g": 7, "ratio": "1:10", "water_ml": 70, "temperature_c": 100, "grind_size": "Medium", "tags": ["Hot"], "notes": "Two foam rises on low heat; ratio fixed on the site."}, {"method": "Cezve", "recipe": "James Hoffmann Sub-Boil Approach", "slug": "hoffmann", "url": "https://calculate.coffee/cezve/hoffmann", "coffee_g": 7, "ratio": "1:10", "water_ml": 70, "temperature_c": 100, "grind_size": "Medium", "tags": ["Hot"], "notes": "Single controlled heat cycle below boiling; ratio fixed on the site."}, {"method": "Cold Brew", "recipe": "James Hoffmann 18-Hour Concentrate", "slug": "james-hoffmann", "url": "https://calculate.coffee/cold-brew/james-hoffmann", "coffee_g": 100, "ratio": "1:10", "water_ml": 1000, "temperature_c": 20, "grind_size": "Medium", "tags": ["Cold"], "notes": "Site recipe card says 18-hour concentrate; recipe page notes 12-hour refrigerator steep, so this discrepancy should be preserved for later verification."}, {"method": "Cold Brew", "recipe": "Classic Toddy Ready-to-Drink", "slug": "classic", "url": "https://calculate.coffee/cold-brew/classic", "coffee_g": 60, "ratio": "1:16", "water_ml": 960, "temperature_c": 20, "grind_size": "Medium", "tags": ["Cold"], "notes": "Classic Toddy-style ready-to-drink profile; site card describes 12 hours at room temperature."}];
-const META = {"V60": ["◒", "Precisão & percolação"], "AeroPress": ["◈", "Imersão & pressão"], "Orea": ["◇", "Fluxo rápido"], "French Press": ["▣", "Imersão clássica"], "Clever": ["◉", "Imersão com válvula"], "Hario Switch": ["◍", "Híbrido"], "Chemex": ["◇", "Percolação limpa"], "Moka Pot": ["▰", "Stovetop"], "Origami": ["✦", "Percolação"], "Siphon": ["◌", "Vácuo"], "Cezve / Turkish Coffee": ["☕", "Café turco"], "Cold Brew": ["❄", "Extração a frio"]};
-
-let selectedMethod = METHODS[0];
-let selectedRecipe = RECIPES[0];
-let filteredRecipes = [...RECIPES];
-
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-function methodRecipes(method){
-  return RECIPES.filter(r => r.method === method);
-}
-
-function renderMethods(){
-  $("methods").innerHTML = METHODS.map(m => {
-    const meta = META[m] || ["☕","Método"];
-    const count = methodRecipes(m).length;
-    return `<button class="method-btn ${m===selectedMethod?'active':''}" data-method="${esc(m)}">
-      <span class="method-icon">${meta[0]}</span>
-      <span class="method-text"><strong>${esc(m)}</strong><small>${esc(meta[1])}</small></span>
-      <span class="method-count">${count}</span>
-    </button>`;
-  }).join("");
-
-  document.querySelectorAll(".method-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      selectedMethod = btn.dataset.method;
-      const list = methodRecipes(selectedMethod);
-      selectedRecipe = list[0];
-      renderAll();
-    });
-  });
-}
-
-function renderRecipeList(){
-  const methodList = methodRecipes(selectedMethod);
-  const q = $("search").value.trim().toLowerCase();
-  const list = q ? methodList.filter(r => searchable(r).includes(q)) : methodList;
-
-  $("methodTitle").textContent = selectedMethod;
-  const meta = META[selectedMethod] || ["☕","Método de preparo"];
-  $("methodSubtitle").textContent = `${meta[1]} · ${methodList.length} variação${methodList.length===1?'':'ões'}`;
-
-  if(!list.length){
-    $("recipesList").innerHTML = `<div class="empty">Nenhuma variação encontrada neste método.</div>`;
-    return;
-  }
-  if(!list.some(r => r.slug === selectedRecipe.slug)) selectedRecipe = list[0];
-
-  $("recipesList").innerHTML = `<div class="recipe-list">${list.map(r => `
-    <button class="recipe-btn ${r.slug===selectedRecipe.slug?'active':''}" data-slug="${esc(r.slug)}">
-      <span class="dot"></span>
-      <span>
-        <span class="recipe-name">${esc(r.recipe)}</span>
-        <span class="recipe-tag">${esc((r.tags||[]).join(" · ") || "Receita")}</span>
-      </span>
-    </button>`).join("")}</div>`;
-
-  document.querySelectorAll(".recipe-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      selectedRecipe = RECIPES.find(r => r.slug === btn.dataset.slug);
-      renderRecipe();
-      renderRecipeList();
-    });
-  });
-}
-
-function searchable(r){
-  return [r.method,r.recipe,r.ratio,r.grind_size,...(r.tags||[]),r.notes].join(" ").toLowerCase();
-}
-
-function parseRatio(ratio){
-  const m = String(ratio).match(/1\s*:\s*([\d.,]+)/);
-  return m ? parseFloat(m[1].replace(",", ".")) : null;
-}
-
-function roundNice(n){
-  return Math.round(n*10)/10;
-}
-
-function renderRecipe(){
-  const r = selectedRecipe;
-  const ratioNum = parseRatio(r.ratio);
-  const notes = r.notes ? `<div class="note"><strong>Nota da receita</strong>${esc(r.notes)}</div>` : "";
-  const tags = (r.tags||[]).map(t => `<span class="tag">${esc(t)}</span>`).join("");
-
-  $("recipeCard").innerHTML = `
-    <div class="card-top">
+  <article class="recipe-card" id="recipeCard">
+    <div class="recipe-top">
       <div>
-        <div class="eyebrow">${esc(r.method)} · ${esc(r.tags?.[0] || "Receita")}</div>
-        <h2>${esc(r.recipe)}</h2>
-        <p>Defina a quantidade que você quer preparar antes de começar.</p>
+        <span class="tag" id="recipeTag">CAFÉ COADO</span>
+        <h2 id="recipeTitle">V60 — Hoffmann</h2>
+        <p id="recipeSubtitle">Uma receita equilibrada, doce e fácil de repetir.</p>
       </div>
-      <div class="card-actions">
-        <button class="action" id="copyBtn">Copiar parâmetros</button>
-      </div>
+      <div class="big-icon" id="bigIcon">◒</div>
     </div>
 
-    <div class="stats">
-      <div class="stat"><span>Café</span><strong id="statCoffee">${r.coffee_g}</strong><em>g</em></div>
-      <div class="stat"><span>Água</span><strong id="statWater">${r.water_ml}</strong><em>ml</em></div>
-      <div class="stat"><span>Proporção</span><strong id="statRatio">${esc(r.ratio)}</strong></div>
-      <div class="stat"><span>Temperatura</span><strong>${r.temperature_c}</strong><em>°C</em></div>
-      <div class="stat"><span>Moagem</span><strong style="font-size:15px">${esc(r.grind_size)}</strong></div>
+    <div class="recipe-meta" id="recipeMeta"></div>
+
+    <div class="recipe-body">
+      <div class="section-label">Receita</div>
+      <div class="steps" id="steps"></div>
     </div>
 
-    <div class="body">
-      <section class="section parameter-section">
-        <div class="section-title-row">
-          <div>
-            <h3>01 · Defina os parâmetros</h3>
-            <p class="section-subtitle">Ajuste a receita para a quantidade que você quer preparar.</p>
-          </div>
-          <span class="live-badge">cálculo ao vivo</span>
-        </div>
-        <div class="param-grid">
-          <div class="field">
-            <label>Café</label>
-            <div class="inputrow"><input id="coffeeInput" type="number" min="0.1" step="0.1" value="${r.coffee_g}"><span class="unit">g</span></div>
-          </div>
-          <div class="field">
-            <label>Água</label>
-            <div class="inputrow"><input id="waterInput" type="number" min="1" step="1" value="${r.water_ml}"><span class="unit">ml</span></div>
-          </div>
-          <div class="field">
-            <label>Proporção</label>
-            <div class="inputrow"><input id="ratioInput" type="number" min="1" step="0.01" value="${ratioNum ?? ''}"><span class="unit">água : café</span></div>
-          </div>
-          <div class="field">
-            <label>Temperatura</label>
-            <div class="inputrow"><input id="tempInput" type="number" min="0" step="1" value="${r.temperature_c}"><span class="unit">°C</span></div>
-          </div>
-        </div>
-        <div class="calc-note">Altere café, água ou proporção. Os outros valores de volume acompanham automaticamente a escala escolhida.</div>
-      </section>
+    <div class="taste-note" id="tasteNote"></div>
 
-      <section class="section recipe-section">
-        <div class="section-title-row">
-          <div>
-            <h3>02 · Receita</h3>
-            <p class="section-subtitle">Parâmetros e orientações essenciais para executar esta variação.</p>
-          </div>
-          <span class="recipe-status">pronto para preparar</span>
-        </div>
-        <div class="recipe-highlight">
-          <div class="recipe-highlight-icon">☕</div>
-          <div>
-            <strong>${esc(r.recipe)}</strong>
-            <span>${esc(r.method)} · ${esc(r.grind_size)}</span>
-          </div>
-        </div>
-        <div class="recipe-details">
-          <div class="detail-card">
-            <span>Quantidade definida</span>
-            <strong><b id="recipeCoffee">${r.coffee_g}</b> g de café</strong>
-            <small><b id="recipeWater">${r.water_ml}</b> ml de água · 1:<b id="recipeRatio">${ratioNum ?? ''}</b></small>
-          </div>
-          <div class="detail-card">
-            <span>Temperatura</span>
-            <strong><b id="recipeTemp">${r.temperature_c}</b> °C</strong>
-            <small>Moagem: ${esc(r.grind_size)}</small>
-          </div>
-        </div>
-        <div class="recipe-note">
-          <strong>Orientação</strong>
-          <p>${r.notes ? esc(r.notes) : 'Esta variação não possui uma orientação textual adicional na base disponível.'}</p>
-        </div>
-        <div class="recipe-steps">
-          <div class="mini-step"><b>1</b><span>Separe o equipamento e os parâmetros exibidos acima.</span></div>
-          <div class="mini-step"><b>2</b><span>Faça o preparo seguindo a técnica desta variação.</span></div>
-          <div class="mini-step"><b>3</b><span>Use a moagem e a temperatura indicadas como ponto de partida e ajuste pelo resultado na xícara.</span></div>
-        </div>
-      </section>
+    <div class="recipe-actions">
+      <button class="primary" id="timerBtn">▶ Iniciar timer</button>
+      <button class="secondary" id="openCalc2">Ajustar receita</button>
     </div>
-  `;
+  </article>
+</section>
+</main>
 
-  bindCalculator(r, ratioNum);
-  $("copyBtn").addEventListener("click", () => copyParams());
-}
+<div class="timer-bar" id="timerBar" hidden>
+  <span id="timerLabel">Extração</span><strong id="timerValue">00:00</strong>
+  <button id="pauseTimer">Pausar</button><button id="stopTimer">Parar</button>
+</div>
 
-function bindCalculator(r, ratioNum){
-  const coffee = $("coffeeInput"), water = $("waterInput"), ratio = $("ratioInput"), temp = $("tempInput");
-  let syncing = false;
+<div class="modal" id="calcModal" hidden>
+ <div class="modal-box">
+  <button class="close" id="closeCalc">×</button>
+  <span class="eyebrow">calculadora</span>
+  <h2>Monte sua receita</h2>
+  <p class="muted">Use o volume na xícara ou a dose de café que você tem.</p>
+  <div class="calc-mode">
+   <button class="mode active" data-mode="yield">Quero <b>mL na xícara</b></button>
+   <button class="mode" data-mode="coffee">Tenho <b>gramas de café</b></button>
+  </div>
+  <label id="yieldField">Café pronto (ml)<input id="yieldInput" type="number" min="20" value="250"></label>
+  <label id="coffeeField" hidden>Dose de café (g)<input id="coffeeInput" type="number" min="1" value="15"></label>
+  <label>Ratio
+   <select id="ratioSelect"><option value="14">1:14</option><option value="15">1:15</option><option value="16" selected>1:16</option><option value="17">1:17</option><option value="custom">Personalizado</option></select>
+  </label>
+  <label id="customRatioField" hidden>Seu ratio<input id="customRatio" type="number" min="1" step=".1" value="16"></label>
+  <div class="calc-result"><div><small>Café</small><strong id="calcCoffee">17,9 g</strong></div><div><small>Água</small><strong id="calcWater">286 ml</strong></div><div><small>Perfil</small><strong id="calcProfile">Equilibrado</strong></div></div>
+  <p class="estimate">Estimativa para o volume pronto: considera cerca de 2 g de água retida por 1 g de café. O resultado real varia com método, filtro, moagem e retenção.</p>
+ </div>
+</div>
 
-  coffee.addEventListener("input", () => {
-    if(syncing) return;
-    const c = parseFloat(coffee.value);
-    const rr = parseFloat(ratio.value);
-    if(c>0 && rr>0){
-      syncing = true;
-      water.value = String(roundNice(c*rr));
-      syncing = false;
-      updateStats();
-    }
-  });
-  water.addEventListener("input", () => {
-    if(syncing) return;
-    const w = parseFloat(water.value);
-    const rr = parseFloat(ratio.value);
-    if(w>0 && rr>0){
-      syncing = true;
-      coffee.value = String(roundNice(w/rr));
-      syncing = false;
-      updateStats();
-    }
-  });
-  ratio.addEventListener("input", () => {
-    const rr = parseFloat(ratio.value);
-    const c = parseFloat(coffee.value);
-    if(rr>0 && c>0){
-      syncing = true;
-      water.value = String(roundNice(c*rr));
-      syncing = false;
-      updateStats();
-    }
-  });
-  temp.addEventListener("input", updateStats);
-
-  function updateStats(){
-    const c = parseFloat(coffee.value)||0, w = parseFloat(water.value)||0, rr = parseFloat(ratio.value)||0, t = parseFloat(temp.value)||0;
-    $("statCoffee").textContent = c;
-    $("statWater").textContent = w;
-    $("statRatio").textContent = rr ? `1:${rr}` : "—";
-    if ($("recipeCoffee")) $("recipeCoffee").textContent = c;
-    if ($("recipeWater")) $("recipeWater").textContent = w;
-    if ($("recipeRatio")) $("recipeRatio").textContent = rr || "—";
-    if ($("recipeTemp")) $("recipeTemp").textContent = t;
-  }
-}
-
-async function copyParams(){
-  const r = selectedRecipe;
-  const c = $("coffeeInput")?.value || r.coffee_g;
-  const w = $("waterInput")?.value || r.water_ml;
-  const rr = $("ratioInput")?.value || parseRatio(r.ratio);
-  const t = $("tempInput")?.value || r.temperature_c;
-  const text = `${r.recipe}\n${r.method}\nCafé: ${c} g\nÁgua: ${w} ml\nProporção: 1:${rr}\nTemperatura: ${t} °C\nMoagem: ${r.grind_size}`;
-  try{
-    await navigator.clipboard.writeText(text);
-    showToast("Parâmetros copiados ☕");
-  }catch(e){ showToast("Selecione e copie manualmente."); }
-}
-
-function showToast(msg){
-  const t=$("toast"); t.textContent=msg; t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1800);
-}
-
-function renderMobileMethods(){
-  $("mobileMethods").innerHTML = METHODS.map(m => {
-    const meta = META[m] || ["☕","Método"];
-    return `<button class="method-btn ${m===selectedMethod?'active':''}" data-mobile-method="${esc(m)}">
-      <span class="method-icon">${meta[0]}</span><span class="method-text"><strong>${esc(m)}</strong></span>
-    </button>`;
-  }).join("");
-  document.querySelectorAll("[data-mobile-method]").forEach(btn => btn.addEventListener("click", () => {
-    selectedMethod = btn.dataset.mobileMethod;
-    selectedRecipe = methodRecipes(selectedMethod)[0];
-    renderAll();
-  }));
-}
-
-function renderMobileRecipes(){
-  const list = methodRecipes(selectedMethod);
-  $("mobileRecipes").innerHTML = `<div class="recipe-list">${list.map(r => `
-    <button class="recipe-btn ${r.slug===selectedRecipe.slug?'active':''}" data-mobile-slug="${esc(r.slug)}">
-      <span class="dot"></span><span><span class="recipe-name">${esc(r.recipe)}</span><span class="recipe-tag">${esc((r.tags||[]).join(" · "))}</span></span>
-    </button>`).join("")}</div>`;
-  document.querySelectorAll("[data-mobile-slug]").forEach(btn => btn.addEventListener("click", () => {
-    selectedRecipe = RECIPES.find(r => r.slug === btn.dataset.mobileSlug);
-    renderRecipe(); renderRecipeList(); renderMobileRecipes();
-    document.getElementById("recipeCard").scrollIntoView({behavior:"smooth",block:"start"});
-  }));
-}
-
-
-function setupScrollArrows(){
-  const pairs = [
-    ["mobileMethods","methodsLeft","methodsRight"],
-    ["mobileRecipes","recipesLeft","recipesRight"]
-  ];
-  pairs.forEach(([id,leftId,rightId]) => {
-    const el = $(id), left = $(leftId), right = $(rightId);
-    if(!el || !left || !right) return;
-    const update = () => {
-      left.disabled = el.scrollLeft <= 2;
-      right.disabled = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
-    };
-    left.onclick = () => el.scrollBy({left:-220,behavior:"smooth"});
-    right.onclick = () => el.scrollBy({left:220,behavior:"smooth"});
-    el.onscroll = update;
-    setTimeout(update, 40);
-  });
-}
-
-function renderAll(){
-  renderMethods();
-  renderRecipeList();
-  renderMobileMethods();
-  renderMobileRecipes();
-  renderRecipe();
-  $("visibleCount").textContent = RECIPES.length;
-  setupScrollArrows();
-}
-
-$("search").addEventListener("input", () => {
-  const q = $("search").value.trim().toLowerCase();
-  if(q){
-    const first = RECIPES.find(r => searchable(r).includes(q));
-    if(first && first.method !== selectedMethod){
-      selectedMethod = first.method;
-      selectedRecipe = first;
-    }
-  }
-  renderAll();
-});
-
-document.addEventListener("keydown", e => {
-  if(e.key === "/" && document.activeElement !== $("search") && !["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
-    e.preventDefault(); $("search").focus();
-  }
-  if(e.key === "Escape") $("search").blur();
-});
-
-renderAll();
-</script>
+<footer>barista em casa · baristaemcasa.com.br</footer>
+<script src="js/app.js"></script>
 </body>
 </html>
