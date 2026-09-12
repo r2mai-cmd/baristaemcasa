@@ -1,30 +1,26 @@
-# Barista em Casa — V7
+# Barista em Casa — V8
 
-## O que mudou nesta versão
+Site estático de receitas de café com 41 receitas em 12 métodos.
 
-Esta versão muda a estrutura do layout, não apenas as cores.
+## Estrutura
 
-### Desktop
-- Coluna de **métodos fixa à esquerda**, em orientação vertical.
-- V60, AeroPress, Chemex, Prensa Francesa e Moka têm ícones visuais próprios.
-- Cada receita fica em uma **lista vertical à esquerda do conteúdo**.
-- Cada receita possui uma mini-ilustração do método.
-- Ao clicar na receita, o **card grande da receita abre/atualiza à direita**.
-- Microanimação no ícone quando o método é selecionado.
-- Paleta mais colorida e quente, com uma cor diferente para cada método.
+- `index.html` — site completo, sem dependências externas.
+- `receitas.json` — base das receitas extraídas.
+- `receitas.csv` — mesma base em CSV.
 
-### Celular
-- A coluna de métodos vira uma barra estreita de ícones à esquerda.
-- Os métodos continuam em **coluna vertical**, e não em botões horizontais.
-- O ícone do método recebe animação ao tocar.
-- A receita abre na área principal ao lado da barra.
-- A lista de receitas continua vertical.
+## Como abrir
 
-### Também mantém
-- Calculadora de café pronto ou café disponível.
-- Proporções personalizadas.
-- Leitura de intensidade.
-- Timer guiado.
-- Etapas com nomes em inglês (Blooming, First Pour, Steep, Press etc.) e instruções em português.
+Abra `index.html` no navegador.
 
-Os ícones são ilustrações leves feitas em HTML/CSS nesta V7, para não depender de imagens externas.
+## Recursos da V8
+
+- Navegação vertical por método.
+- Variações do método em uma segunda coluna vertical.
+- Busca por método, receita e tags.
+- Calculadora dinâmica de café, água e proporção.
+- Temperatura e moagem exibidas por receita.
+- Copiar parâmetros.
+- Link para a fonte original da receita.
+- Layout responsivo para desktop e celular.
+
+Observação: os passos completos de preparo do catálogo original são carregados dinamicamente no site de origem e não foram inventados nesta versão.
