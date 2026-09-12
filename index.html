@@ -85,7 +85,7 @@ button,input{font:inherit}button{cursor:pointer}
 .guide{margin-top:0}.guide-box{display:flex;gap:10px;align-items:flex-start;padding:11px;border-radius:11px;background:#f1eade}.guide-number{width:25px;height:25px;border-radius:7px;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:900;font-size:9px;flex:none}.guide-box h4{margin:0 0 3px;font-size:9px}.guide-box p{margin:0;font-size:8px;line-height:1.4;color:var(--muted)}
 .footer{max-width:1050px;margin:12px auto 0;color:#948a80;font-size:8px;line-height:1.45}
 
-.mobile-methods,.mobile-recipes{display:none}
+.mobile-methods,.mobile-recipes{display:none}.mobile-nav-wrap{position:relative}.mobile-nav-wrap .mobile-methods,.mobile-nav-wrap .mobile-recipes{scrollbar-width:none}.mobile-nav-wrap .mobile-methods::-webkit-scrollbar,.mobile-nav-wrap .mobile-recipes::-webkit-scrollbar{display:none}
 .empty{padding:22px 10px;text-align:center;color:var(--muted);font-size:10px}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(10px);background:var(--dark);color:#fff;padding:9px 12px;border-radius:10px;font-size:9px;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -113,6 +113,218 @@ button,input{font:inherit}button{cursor:pointer}
 @media(max-width:370px){
   .param-grid{grid-template-columns:1fr}.hero h1{font-size:27px}.mobile-recipes .recipe-btn{width:190px}
 }
+
+/* V8 — leitura mobile e navegação horizontal */
+.section-title-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}
+.section-title-row h3{margin:0}
+.section-subtitle{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.4}
+.live-badge,.recipe-status{font-size:7px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;border:1px solid var(--line);border-radius:99px;padding:5px 7px;white-space:nowrap;background:#fff;color:var(--good)}
+.recipe-status{color:var(--accent)}
+.recipe-section{background:#fffaf3}
+.recipe-highlight{display:flex;align-items:center;gap:10px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.recipe-highlight-icon{width:30px;height:30px;border-radius:9px;background:var(--dark);color:#fff;display:grid;place-items:center;flex:none}
+.recipe-highlight strong{display:block;font-size:11px;line-height:1.3}
+.recipe-highlight span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.recipe-details{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.detail-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px}
+.detail-card span{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:5px}
+.detail-card strong{display:block;font-size:13px}
+.detail-card small{display:block;color:var(--muted);font-size:8px;margin-top:3px}
+.recipe-note{margin-top:8px;padding:10px 11px;border:1px solid var(--line);background:#fff;border-radius:11px}
+.recipe-note strong{font-size:8px;text-transform:uppercase;letter-spacing:.08em}
+.recipe-note p{font-size:9px;line-height:1.45;color:#625a52;margin:4px 0 0}
+.recipe-steps{display:grid;gap:6px;margin-top:8px}
+.mini-step{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:10px;background:#f1eade;font-size:8px;line-height:1.4;color:#665d55}
+.mini-step b{width:22px;height:22px;border-radius:7px;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:8px;flex:none}
+
+/* Setas discretas sobre as faixas horizontais no celular */
+.scroll-wrap{position:relative}
+.scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:8;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:rgba(255,253,249,.95);box-shadow:0 5px 14px rgba(35,25,17,.12);display:grid;place-items:center;color:var(--ink);font-size:17px;line-height:1}
+.scroll-arrow.left{left:5px}.scroll-arrow.right{right:5px}
+.scroll-arrow[disabled]{opacity:.28;pointer-events:none}
+@media(min-width:901px){.scroll-arrow{display:none}}
+@media(max-width:520px){
+  .section-title-row{align-items:center}
+  .section-subtitle{font-size:8px}
+  .recipe-details{grid-template-columns:1fr 1fr}
+}
+
+/* BARISTA EM CASA — identidade visual colorida V8 */
+:root{
+  --bg:#fff7ec;
+  --paper:#fffdf8;
+  --paper2:#fff3df;
+  --ink:#241813;
+  --muted:#806d60;
+  --line:#ead9c8;
+  --dark:#24150f;
+  --accent:#d65a2a;
+  --accent2:#f2a33a;
+  --coffee:#7a3f22;
+  --cream:#fff0c9;
+  --mint:#cdebdc;
+  --sky:#d8e9f6;
+  --pink:#f5d3cf;
+  --yellow:#ffe39a;
+  --shadow:0 16px 45px rgba(105,61,27,.11);
+  --radius:20px
+}
+body{
+  background:
+    radial-gradient(circle at 8% 5%,rgba(242,163,58,.20),transparent 23%),
+    radial-gradient(circle at 94% 18%,rgba(214,90,42,.14),transparent 25%),
+    linear-gradient(145deg,#fffaf2 0%,#fff4e4 48%,#f9eee2 100%);
+}
+.topbar{
+  background:rgba(255,253,248,.94);
+  border-bottom:1px solid #ead9c8;
+}
+.logo{
+  background:linear-gradient(145deg,#2b1710,#713b21);
+  box-shadow:0 7px 18px rgba(110,56,28,.22);
+}
+.search input{
+  background:#fffdf9;
+  border-color:#e5d4c2;
+}
+.search input:focus{
+  border-color:#e28a55;
+  box-shadow:0 0 0 4px rgba(214,90,42,.10)
+}
+.pill{
+  background:#fff9f0;border-color:#ead9c8
+}
+.methods-rail{background:rgba(255,250,243,.78);border-color:#ead9c8}
+.recipe-rail{background:rgba(255,247,237,.84);border-color:#ead9c8}
+.recipe-head{background:rgba(255,247,237,.95)}
+.method-btn:hover,.recipe-btn:hover{background:#ffead3}
+.method-btn.active,.recipe-btn.active{
+  background:linear-gradient(135deg,#2a1811,#5a2d1b);
+  box-shadow:0 8px 20px rgba(89,43,25,.18)
+}
+.method-icon{
+  background:#ffe9cf;
+  color:#7a3f22
+}
+.method-btn.active .method-icon{background:rgba(255,211,151,.18);color:#ffd29c}
+.count{background:#ffe9d3;color:#8b5637}
+.recipe-btn{background:transparent}
+.recipe-btn .dot{background:#e1c5af}
+.recipe-btn.active .dot{background:#ffb34d}
+.eyebrow{color:#c84d23}
+.tag{
+  background:#fffaf1;
+  border-color:#ead5c0;
+}
+.hero h1{
+  color:#2a1812;
+}
+.hero h1::after{
+  content:"";
+  display:block;
+  width:70px;height:6px;margin-top:13px;border-radius:99px;
+  background:linear-gradient(90deg,#d65a2a,#f2a33a,#f7d36a);
+}
+.recipe-card{
+  background:rgba(255,253,248,.96);
+  border-color:#ead9c8;
+  box-shadow:0 20px 55px rgba(105,61,27,.12);
+}
+.card-top{
+  background:linear-gradient(120deg,#fffdf8 0%,#fff6e8 100%);
+  border-color:#ead9c8;
+}
+.action{
+  background:#fffaf3;border-color:#e5d4c2
+}
+.action.primary{
+  background:linear-gradient(135deg,#d65a2a,#9e3d1f);
+  border-color:#9e3d1f
+}
+.stats{
+  background:#fffaf3;
+  border-color:#ead9c8
+}
+.stat{border-color:#ead9c8}
+.stat:nth-child(1) strong{color:#b94d27}
+.stat:nth-child(2) strong{color:#2f765b}
+.stat:nth-child(3) strong{color:#7651a6}
+.stat:nth-child(4) strong{color:#2f6c9d}
+.stat:nth-child(5) strong{color:#7a3f22}
+.body{background:transparent}
+.section{
+  background:linear-gradient(145deg,#fff8ec,#fff2df);
+  border-color:#ead9c8
+}
+.parameter-section{
+  background:linear-gradient(145deg,#fff7e8,#fff0d3);
+  border-color:#efc98e;
+  box-shadow:inset 0 3px 0 rgba(242,163,58,.32)
+}
+.recipe-section{
+  background:linear-gradient(145deg,#fff9f0,#fff0e7);
+  border-color:#ecc9b8
+}
+.live-badge{
+  background:#e5f5eb;border-color:#c2e4cf;color:#3e7658
+}
+.recipe-status{
+  background:#fff0dd;border-color:#f0c99f;color:#b84d25
+}
+.field{
+  background:#fffdf9;
+  border-color:#ead9c8;
+  box-shadow:0 4px 12px rgba(110,64,30,.035)
+}
+.field:focus-within{
+  border-color:#df8b55;
+  box-shadow:0 0 0 3px rgba(214,90,42,.08)
+}
+.field input{color:#2c1911}
+.recipe-highlight{
+  background:linear-gradient(110deg,#fffdf9,#fff0d6);
+  border-color:#ecd4bd
+}
+.recipe-highlight-icon{
+  background:linear-gradient(145deg,#d65a2a,#8d351d)
+}
+.detail-card:nth-child(1){
+  background:#fff5dc;border-color:#efd49d
+}
+.detail-card:nth-child(2){
+  background:#eaf5ee;border-color:#c8e3d1
+}
+.recipe-note{
+  background:#fffdf8;border-color:#ead9c8
+}
+.recipe-steps .mini-step:nth-child(1){background:#fff0cf}
+.recipe-steps .mini-step:nth-child(2){background:#e7f3ec}
+.recipe-steps .mini-step:nth-child(3){background:#f2e8f8}
+.mini-step b{background:#2b1911}
+.footer{color:#927d6d}
+.mobile-methods,.mobile-recipes{
+  background:rgba(255,248,239,.97);
+  border-color:#ead9c8
+}
+.mobile-methods .method-btn{
+  background:#fffaf3;border-color:#ead9c8
+}
+.mobile-methods .method-btn.active{
+  background:linear-gradient(135deg,#2a1811,#5a2d1b);
+  border-color:#2a1811
+}
+.mobile-recipes .recipe-btn{
+  background:#fff9f0;border-color:#ead9c8
+}
+.mobile-recipes .recipe-btn.active{background:linear-gradient(135deg,#2a1811,#5a2d1b)}
+.scroll-arrow{
+  background:rgba(255,253,248,.98);
+  border-color:#e2c9b1;
+  color:#8d4324;
+  box-shadow:0 6px 18px rgba(96,53,28,.14)
+}
+.toast{background:linear-gradient(135deg,#2a1811,#67351f)}
+
 </style>
 
 </head>
@@ -134,8 +346,16 @@ button,input{font:inherit}button{cursor:pointer}
     </div>
   </header>
 
-  <div class="mobile-methods" id="mobileMethods"></div>
-  <div class="mobile-recipes" id="mobileRecipes"></div>
+  <div class="mobile-nav-wrap methods-scroll-wrap">
+    <button class="scroll-arrow left" id="methodsLeft" aria-label="Rolar métodos para a esquerda">‹</button>
+    <div class="mobile-methods" id="mobileMethods"></div>
+    <button class="scroll-arrow right" id="methodsRight" aria-label="Rolar métodos para a direita">›</button>
+  </div>
+  <div class="mobile-nav-wrap recipes-scroll-wrap">
+    <button class="scroll-arrow left" id="recipesLeft" aria-label="Rolar receitas para a esquerda">‹</button>
+    <div class="mobile-recipes" id="mobileRecipes"></div>
+    <button class="scroll-arrow right" id="recipesRight" aria-label="Rolar receitas para a direita">›</button>
+  </div>
 
   <div class="layout">
     <aside class="rail methods-rail">
@@ -156,8 +376,8 @@ button,input{font:inherit}button{cursor:pointer}
       <section class="hero">
         <div>
           <div class="eyebrow">Seu bar de receitas</div>
-          <h1>Escolha o método. Ajuste a receita. Prepare.</h1>
-          <p>Uma interface pensada para bater o olho, escolher a variação e alterar a dose sem fazer conta na mão. Os parâmetros abaixo são os valores-base extraídos do catálogo do Calculate.Coffee.</p>
+          <h1>Seu café, do seu jeito. ☕</h1>
+          <p>Escolha o método, ajuste a quantidade e deixe o Barista em Casa organizar as contas. Depois é só seguir a receita e preparar.</p>
         </div>
         <div class="hero-side">
           <span class="tag">41 receitas</span><span class="tag">12 métodos</span><span class="tag">Responsivo</span>
@@ -165,9 +385,7 @@ button,input{font:inherit}button{cursor:pointer}
       </section>
 
       <section class="recipe-card" id="recipeCard"></section>
-      <div class="footer">
-        Base de dados: Calculate.Coffee. Os parâmetros de dose, proporção, água, temperatura, moagem, tags e notas refletem a extração disponível. Os passos completos de preparo são carregados dinamicamente no site original e não foram inventados nesta versão.
-      </div>
+      <div class="footer">Parâmetros organizados para uso no Barista em Casa. As informações numéricas são apresentadas como referências de preparo; o passo a passo detalhado desta versão será incorporado à medida que cada técnica for estruturada.</div>
     </main>
   </div>
 </div>
@@ -267,11 +485,10 @@ function renderRecipe(){
       <div>
         <div class="eyebrow">${esc(r.method)} · ${esc(r.tags?.[0] || "Receita")}</div>
         <h2>${esc(r.recipe)}</h2>
-        <p>Parâmetros-base do catálogo · altere a dose ou a água e deixe a proporção fazer o trabalho.</p>
+        <p>Defina a quantidade que você quer preparar antes de começar.</p>
       </div>
       <div class="card-actions">
         <button class="action" id="copyBtn">Copiar parâmetros</button>
-        <a class="action primary" href="${esc(r.url)}" target="_blank" rel="noopener">Ver fonte ↗</a>
       </div>
     </div>
 
@@ -284,8 +501,14 @@ function renderRecipe(){
     </div>
 
     <div class="body">
-      <section class="section">
-        <h3>Calculadora rápida</h3>
+      <section class="section parameter-section">
+        <div class="section-title-row">
+          <div>
+            <h3>01 · Defina os parâmetros</h3>
+            <p class="section-subtitle">Ajuste a receita para a quantidade que você quer preparar.</p>
+          </div>
+          <span class="live-badge">cálculo ao vivo</span>
+        </div>
         <div class="param-grid">
           <div class="field">
             <label>Café</label>
@@ -304,35 +527,44 @@ function renderRecipe(){
             <div class="inputrow"><input id="tempInput" type="number" min="0" step="1" value="${r.temperature_c}"><span class="unit">°C</span></div>
           </div>
         </div>
-        <div class="calc-note">Edite <b>café</b> para recalcular a água, ou edite <b>água</b> para recalcular o café. Ao editar a proporção, a água é recalculada mantendo a dose atual.</div>
+        <div class="calc-note">Altere café, água ou proporção. Os outros valores de volume acompanham automaticamente a escala escolhida.</div>
       </section>
 
-      <section class="section">
-        <h3>Leitura da receita</h3>
-        <div class="notes">
-          ${notes || '<div class="note"><strong>Resumo</strong>Esta variação não traz uma nota adicional no catálogo extraído.</div>'}
-          <div class="note"><strong>Tags</strong>${tags || "Sem tags adicionais."}</div>
-          <div class="note"><strong>Moagem-base</strong>${esc(r.grind_size)}</div>
+      <section class="section recipe-section">
+        <div class="section-title-row">
+          <div>
+            <h3>02 · Receita</h3>
+            <p class="section-subtitle">Parâmetros e orientações essenciais para executar esta variação.</p>
+          </div>
+          <span class="recipe-status">pronto para preparar</span>
         </div>
-      </section>
-    </div>
-
-    <div class="body" style="padding-top:0">
-      <section class="section" style="grid-column:1/-1">
-        <h3>Modo de uso</h3>
-        <div class="guide">
-          <div class="guide-box">
-            <div class="guide-number">01</div>
-            <div><h4>Escolha a variação</h4><p>Use a coluna central para alternar rapidamente entre as receitas deste método.</p></div>
+        <div class="recipe-highlight">
+          <div class="recipe-highlight-icon">☕</div>
+          <div>
+            <strong>${esc(r.recipe)}</strong>
+            <span>${esc(r.method)} · ${esc(r.grind_size)}</span>
           </div>
-          <div class="guide-box" style="margin-top:9px">
-            <div class="guide-number">02</div>
-            <div><h4>Ajuste a escala</h4><p>Altere café ou água na calculadora. A proporção é preservada automaticamente quando você escala a dose.</p></div>
+        </div>
+        <div class="recipe-details">
+          <div class="detail-card">
+            <span>Quantidade definida</span>
+            <strong><b id="recipeCoffee">${r.coffee_g}</b> g de café</strong>
+            <small><b id="recipeWater">${r.water_ml}</b> ml de água · 1:<b id="recipeRatio">${ratioNum ?? ''}</b></small>
           </div>
-          <div class="guide-box" style="margin-top:9px">
-            <div class="guide-number">03</div>
-            <div><h4>Abra a fonte para os passos completos</h4><p>Os estágios detalhados de preparo não estão presentes na base extraída desta versão; o botão “Ver fonte” leva à receita original.</p></div>
+          <div class="detail-card">
+            <span>Temperatura</span>
+            <strong><b id="recipeTemp">${r.temperature_c}</b> °C</strong>
+            <small>Moagem: ${esc(r.grind_size)}</small>
           </div>
+        </div>
+        <div class="recipe-note">
+          <strong>Orientação</strong>
+          <p>${r.notes ? esc(r.notes) : 'Esta variação não possui uma orientação textual adicional na base disponível.'}</p>
+        </div>
+        <div class="recipe-steps">
+          <div class="mini-step"><b>1</b><span>Separe o equipamento e os parâmetros exibidos acima.</span></div>
+          <div class="mini-step"><b>2</b><span>Faça o preparo seguindo a técnica desta variação.</span></div>
+          <div class="mini-step"><b>3</b><span>Use a moagem e a temperatura indicadas como ponto de partida e ajuste pelo resultado na xícara.</span></div>
         </div>
       </section>
     </div>
@@ -385,6 +617,10 @@ function bindCalculator(r, ratioNum){
     $("statCoffee").textContent = c;
     $("statWater").textContent = w;
     $("statRatio").textContent = rr ? `1:${rr}` : "—";
+    if ($("recipeCoffee")) $("recipeCoffee").textContent = c;
+    if ($("recipeWater")) $("recipeWater").textContent = w;
+    if ($("recipeRatio")) $("recipeRatio").textContent = rr || "—";
+    if ($("recipeTemp")) $("recipeTemp").textContent = t;
   }
 }
 
@@ -433,6 +669,26 @@ function renderMobileRecipes(){
   }));
 }
 
+
+function setupScrollArrows(){
+  const pairs = [
+    ["mobileMethods","methodsLeft","methodsRight"],
+    ["mobileRecipes","recipesLeft","recipesRight"]
+  ];
+  pairs.forEach(([id,leftId,rightId]) => {
+    const el = $(id), left = $(leftId), right = $(rightId);
+    if(!el || !left || !right) return;
+    const update = () => {
+      left.disabled = el.scrollLeft <= 2;
+      right.disabled = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+    };
+    left.onclick = () => el.scrollBy({left:-220,behavior:"smooth"});
+    right.onclick = () => el.scrollBy({left:220,behavior:"smooth"});
+    el.onscroll = update;
+    setTimeout(update, 40);
+  });
+}
+
 function renderAll(){
   renderMethods();
   renderRecipeList();
@@ -440,6 +696,7 @@ function renderAll(){
   renderMobileRecipes();
   renderRecipe();
   $("visibleCount").textContent = RECIPES.length;
+  setupScrollArrows();
 }
 
 $("search").addEventListener("input", () => {
