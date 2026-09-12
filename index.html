@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Barista em Casa — receitas, métodos e preparo guiado para café especial.">
+  <title>Barista em Casa — Café bom, sem complicação.</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">B</div>
+        <div>
+          <strong>barista</strong>
+          <span>em casa</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="eyebrow">Métodos</p>
+        <nav id="methodNav" aria-label="Métodos de preparo"></nav>
+      </div>
+
+      <div class="sidebar-section secondary-nav">
+        <p class="eyebrow">Explorar</p>
+        <button class="side-link active"><span>✦</span> Receitas</button>
+        <button class="side-link"><span>◷</span> Guias</button>
+        <button class="side-link"><span>♡</span> Favoritos</button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="mini-note">
+          <span>☕</span>
+          <div>
+            <strong>Feito para preparar.</strong>
+            <small>Menos teoria. Mais café.</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menu">☰</button>
+        <div class="breadcrumb"><span>Receitas</span><b>·</b><strong id="breadcrumbMethod">V60</strong></div>
+        <button class="quiet-button" id="randomRecipe">↻ <span>Surpreenda-me</span></button>
+      </header>
+
+      <div class="content">
+        <section class="intro">
+          <div>
+            <p class="kicker">RECEITA DO DIA</p>
+            <h1 id="pageTitle">V60</h1>
+            <p id="pageDescription">Um preparo limpo, doce e equilibrado para começar bem.</p>
+          </div>
+          <div class="cup-badge">☕ <span id="recipeCount">4 receitas</span></div>
+        </section>
+
+        <section class="recipe-layout">
+          <div class="recipe-list" id="recipeList"></div>
+
+          <article class="recipe-card" id="recipeCard">
+            <div class="card-top">
+              <div>
+                <span class="tag" id="recipeTag">CLÁSSICA</span>
+                <h2 id="recipeTitle">V60 equilibrado</h2>
+                <p class="author" id="recipeAuthor">Uma receita simples para o dia a dia</p>
+              </div>
+              <button class="favorite" id="favoriteBtn" aria-label="Favoritar receita">♡</button>
+            </div>
+
+            <div class="metrics">
+              <div><span>Café</span><strong id="coffeeValue">18 g</strong></div>
+              <div><span>Água</span><strong id="waterValue">300 g</strong></div>
+              <div><span>Temp.</span><strong id="tempValue">93 °C</strong></div>
+              <div><span>Tempo</span><strong id="timeValue">3:00</strong></div>
+            </div>
+
+            <div class="grind-row">
+              <div>
+                <span class="label">Moagem</span>
+                <strong id="grindValue">Média-fina</strong>
+              </div>
+              <div class="ratio"><span>Proporção</span><strong id="ratioValue">1 : 16,7</strong></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="steps-heading">
+              <div>
+                <span class="label">Preparo</span>
+                <h3>Passo a passo</h3>
+              </div>
+              <button class="text-button" id="startFromTop">Começar →</button>
+            </div>
+
+            <div class="steps" id="steps"></div>
+
+            <div class="calculator">
+              <div>
+                <span class="label">Ajuste a receita</span>
+                <strong>Quanto café você tem?</strong>
+              </div>
+              <div class="dose-control">
+                <button id="minusDose" aria-label="Diminuir dose">−</button>
+                <input id="doseInput" type="number" min="8" max="60" step="1" value="18" aria-label="Dose de café em gramas">
+                <span>g</span>
+                <button id="plusDose" aria-label="Aumentar dose">+</button>
+              </div>
+              <div class="calc-result"><span>água</span><strong id="calculatedWater">300 g</strong></div>
+            </div>
+
+            <button class="primary-button" id="startTimer">Começar preparo <span>→</span></button>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="timer-overlay" id="timerOverlay" aria-hidden="true">
+    <div class="timer-panel">
+      <button class="close-timer" id="closeTimer" aria-label="Fechar">×</button>
+      <p class="kicker">PREPARO GUIADO</p>
+      <h2 id="timerRecipeTitle">V60 equilibrado</h2>
+      <div class="timer-clock" id="timerClock">00:00</div>
+      <div class="timer-step">
+        <span id="timerStepNumber">01</span>
+        <div>
+          <strong id="timerStepTitle">Florescimento</strong>
+          <p id="timerStepText">Despeje 50 g de água e aguarde.</p>
+        </div>
+      </div>
+      <div class="timer-actions">
+        <button class="secondary-button" id="resetTimer">Recomeçar</button>
+        <button class="primary-button" id="nextStep">Começar <span>→</span></button>
+      </div>
+      <div class="progress"><span id="timerProgress"></span></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
